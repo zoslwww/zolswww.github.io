@@ -1,21 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evante's Portfolio</title>
-</head>
-<body>
-    <h1>Hello, I'm Evante!</h1>
-    <p>Welcome to my portfolio. Here's where I showcase my work and projects.</p>
-    <h2>Skills & Technologies</h2>
-    <ul>
-        <li>JavaScript</li>
-        <li>Python</li>
-        <li>HTML/CSS</li>
-    </ul>
-    <h2>Projects</h2>
-    <p>Check out my latest projects on GitHub!</p>
-    <a href="https://github.com/zolswwww" target="_blank">My GitHub</a>
-</body>
-</html>
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [mood, setMood] = useState('');
+  const [color, setColor] = useState('#ffffff');
+  const [moodDescription, setMoodDescription] = useState('');
+
+  const moodColors = {
+    happy: '#FFD700',
+    sad: '#1E90FF',
+    calm: '#98FB98',
+    angry: '#FF6347',
+    relaxed: '#8A2BE2',
+  };
+
+  const moodDescriptions = {
+    happy: "Change to whatever.",
+    sad: "Change to whatever.",
+    calm: "Change to whatever.",
+    angry: "Change to whatever.",
+    relaxed: "Change to whatever.",
+  };
+
+  const handleMoodSelect = (selectedMood) => {
+    setMood(selectedMood);
+    setColor(moodColors[selectedMood]);
+    setMoodDescription(moodDescriptions[selectedMood]);
+  };
+
+  return (
+    <div className="App" style={{ backgroundColor: color }}>
+      <h1>Mood-Based Color Picker</h1>
+      <div className="mood-selector">
+        <h2>How are you feeling?</h2>
+        <button onClick={() => handleMoodSelect('happy')}>😊 Happy</button>
+        <button onClick={() => handleMoodSelect('sad')}>😞 Sad</button>
+        <button onClick={() => handleMoodSelect('calm')}>😌 Calm</button>
+        <button onClick={() => handleMoodSelect('angry')}>😡 Angry</button>
+        <button onClick={() => handleMoodSelect('relaxed')}>😴 Relaxed</button>
+      </div>
+      
+      <div className="color-info">
+        <p className="mood-description">{moodDescription}</p>
+        <p className="hex-code">Color: {color.toUpperCase()}</p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
