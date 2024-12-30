@@ -1,0 +1,104 @@
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
+  const [bmi, setBmi] = useState(null);
+  const [category, setCategory] = useState('');
+  const [weightUnit, setWeightUnit] = useState('kg');
+  const [heightUnit, setHeightUnit] = useState('cm');
+
+  const calculateBMI = () => {
+    if (isNaN(weight) || weight <= 0 || isNaN(height) || height <= 0) {
+      alert("Enter Valid Weight Range.");
+      return;
+    }
+    
+    let heightInMeters = height;
+    if (heightUnit === 'inches') {
+      heightInMeters = height * 0.0254;
+    } else {
+      heightInMeters = height / 100;
+    }
+
+    let calculatedBMI;
+    if (weightUnit === 'kg') {
+      calculatedBMI = weight / (heightInMeters * heightInMeters);
+    } else {
+      calculatedBMI = (weight * 0.453592) / (heightInMeters * heightInMeters);
+    }
+
+    setBmi(calculatedBMI.toFixed(2));
+
+    let bmiCategory;
+    if (calculatedBMI < 18.5) {
+      bmiCategory = " underweight.";
+    } else if (calculatedBMI >= 18.5 && calculatedBMI <= 24.9) {
+      bmiCategory = "target range";
+    } else if (calculatedBMI >= 25 && calculatedBMI <= 29.9) {
+      bmiCategory = " overweight";
+    } else {
+      bmiCategory = "obese";
+    }
+
+    setCategory(bmiCategory);
+  };
+
+  return (
+    <div className="App">
+      <h1>BMI Calculator</h1>
+      <div className="container">
+        <div className="input-group">
+          <label htmlFor="weight">Weight:</label>
+          <div className="unit-select">
+            <input
+              type="number"
+              id="weight"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              placeholder="Enter weight"
+            />
+            <select
+              value={weightUnit}
+              onChange={(e) => setWeightUnit(e.target.value)}
+            >
+              <option value="kg">kg</option>
+              <option value="lbs">lbs</option>
+            </select>
+          </div>
+        </div>
+        <div className="input-group">
+          <label htmlFor="height">Height:</label>
+          <div className="unit-select">
+            <input
+              type="number"
+              id="height"
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+              placeholder="Enter height"
+            />
+            <select
+              value={heightUnit}
+              onChange={(e) => setHeightUnit(e.target.value)}
+            >
+              <option value="cm">cm</option>
+              <option value="inches">inches</option>
+            </select>
+          </div>
+        </div>
+        <button className="calculate-button" onClick={calculateBMI}>
+          Calculate BMI
+        </button>
+        {bmi && (
+          <div className="result">
+            <p>BMI: <strong>{bmi}</strong></p>
+            <p>Category: <strong>{category}</strong></p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
